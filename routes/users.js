@@ -41,22 +41,25 @@ router.delete('/:id', (req, res) => {
 
 router.patch('/:id', (req, res) => {
     const { id } = req.params;
-
     const { firstName, lastName, age } = req.body;
-    const user = users.find((user) => user.id === id);
-    
-    if(firstName) {
+
+    const user = users.find((user) => user.id === parseInt(id)); // Ensure `id` is a number
+
+    if (!user) {
+        return res.status(404).send(`User with id ${id} not found`);
+    }
+
+    if (firstName) {
         user.firstName = firstName;
     }
-    if(lastName) {
+    if (lastName) {
         user.lastName = lastName;
     }
-    if(age) {
+    if (age) {
         user.age = age;
     }
-    
-    res.send(`User with ${id} have been updated`);
 
+    res.send(`User with id ${id} has been updated`);
 });
 
 
